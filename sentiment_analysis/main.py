@@ -1,3 +1,5 @@
+from sympy.abc import theta
+
 import project1 as p1
 import utils
 import numpy as np
@@ -25,8 +27,8 @@ test_bow_features = p1.extract_bow_feature_vectors(test_texts, dictionary)
 #-------------------------------------------------------------------------------
 
 # toy_features, toy_labels = toy_data = utils.load_toy_data('toy_data.tsv')
-#
-# T = 10
+# #
+# T = 100
 # L = 0.2
 #
 # thetas_perceptron = p1.perceptron(toy_features, toy_labels, T)
@@ -63,11 +65,11 @@ test_bow_features = p1.extract_bow_feature_vectors(test_texts, dictionary)
 #    p1.classifier_accuracy(p1.pegasos, train_bow_features,val_bow_features,train_labels,val_labels,T=T,L=L)
 # print("{:50} {:.4f}".format("Training accuracy for Pegasos:", avg_peg_train_accuracy))
 # print("{:50} {:.4f}".format("Validation accuracy for Pegasos:", avg_peg_val_accuracy))
-
-#-------------------------------------------------------------------------------
-# Problem 8
-#-------------------------------------------------------------------------------
-
+#
+# #-------------------------------------------------------------------------------
+# # Problem 8
+# #-------------------------------------------------------------------------------
+#
 # data = (train_bow_features, train_labels, val_bow_features, val_labels)
 #
 # # values of T and lambda to try
@@ -106,14 +108,19 @@ test_bow_features = p1.extract_bow_feature_vectors(test_texts, dictionary)
 #-------------------------------------------------------------------------------
 
 # Your code here
+avg_peg_train_accuracy, avg_peg_val_accuracy = \
+   p1.classifier_accuracy(p1.pegasos, train_bow_features,test_bow_features,train_labels,test_labels,T=25,L=0.01)
+print("{:50} {:.4f}".format("Training accuracy for Pegasos:", avg_peg_train_accuracy))
+print("{:50} {:.4f}".format("test accuracy for Pegasos:", avg_peg_val_accuracy))
 
 #-------------------------------------------------------------------------------
 # Assign to best_theta, the weights (and not the bias!) learned by your most
 # accurate algorithm with the optimal choice of hyperparameters.
 #-------------------------------------------------------------------------------
 
-# best_theta = None # Your code here
-# wordlist   = [word for (idx, word) in sorted(zip(dictionary.values(), dictionary.keys()))]
-# sorted_word_features = utils.most_explanatory_word(best_theta, wordlist)
-# print("Most Explanatory Word Features")
-# print(sorted_word_features[:10])
+theta, theta_0 = p1.pegasos(train_bow_features, train_labels, 25, 0.01)
+best_theta = theta # Your code here
+wordlist   = [word for (idx, word) in sorted(zip(dictionary.values(), dictionary.keys()))]
+sorted_word_features = utils.most_explanatory_word(best_theta, wordlist)
+print("Most Explanatory Word Features")
+print(sorted_word_features[:10])
